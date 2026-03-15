@@ -1,0 +1,1 @@
+/Users/divyanshtripathi/code/learning/rust-lang/minigrep/target/debug/minigrep: /Users/divyanshtripathi/code/learning/rust-lang/minigrep/src/lib.rs /Users/divyanshtripathi/code/learning/rust-lang/minigrep/src/main.rs
