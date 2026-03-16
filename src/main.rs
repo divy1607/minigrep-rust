@@ -14,9 +14,6 @@ fn main() {
         process::exit(1);
     }
 
-    // println!("searching for {}", config.query);
-    // println!("in the file {}", config.file_path);
-    // let _ = run(config);
 }
 
 fn run(config: Config) -> Result<(), Box<dyn Error>> {
