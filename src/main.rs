@@ -4,7 +4,7 @@ use minigrep::{search, search_case_insensitive};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let config = Config::build(&args).unwrap_or_else(|err| {
+    let config = Config::build(args.into_iter().skip(1)).unwrap_or_else(|err| {
         eprintln!("Problem parsing arguments: {err}");
         process::exit(1)
     });
@@ -32,27 +32,33 @@ fn run(config: Config) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub struct Config<'a> {
-    pub query: &'a str,
-    pub file_path: &'a str,
+pub struct Config {
+    pub query: String,
+    pub file_path: String,
     pub ignore_case: bool,
 }
 
 
 
-impl Config<'_> {
-    fn build(args: &Vec<String>) -> Result<Config<'_>, &'static str> {
-        if args.len() < 3 {
-            return Err("not enough arguments");
-        }
-        let query = &args[1];
-        let file_path = &args[2];
+impl Config{
+    fn build(mut args: impl Iterator<Item = String>) -> Result<Config, &'static str> {
+        // if args.len() < 3 {
+        //     return Err("not enough arguments");
+        // }
+        let query = match args.next() {
+            Some(arg) => arg,
+            None => return Err("query not present")
+        };
+        let file_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("file path not present")
+        };
         let ignore_case = env::var("IGNORE_CASE").is_ok();
 
-        return Ok(Config {
-            query: query,
-            file_path: file_path,
-            ignore_case: ignore_case,
-        });
+        Ok(Config {
+           query,
+           file_path,
+           ignore_case
+        })
     }
 }
